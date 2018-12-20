@@ -13,6 +13,8 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     // Registers leaf provider
     let leafProvider = LeafProvider()
     try services.register(leafProvider)
+    // Sets LeafRenderer as preferred ViewRenderer
+    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
     
     // Registers fluent SQLite provider
     let fluentSQLiteProvider = FluentSQLiteProvider()
@@ -26,9 +28,9 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     services.register(databases)
     
     // Initiates migration service
-    let migrations = MigrationConfig()
+    var migrations = MigrationConfig()
+    // Adds User model to migrations
+    migrations.add(model: User.self, database: .sqlite)
+    // Registers migrations
     services.register(migrations)
-    
-    // Sets LeafRenderer as preferred ViewRenderer
-    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
 }
