@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CRUD</title>
+        
+        #// Links Bootstrap, a CSS framework for styling
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            
+            <h1 class="text-center">CRUD</h1>
+            
+            <div class="row">
+                
+                <div class="col-xs-12 col-sm-3">
+                    <h2>Create</h2>
+                    
+                    #// Creates a form that POSTs to /users when submitted
+                    <form method="POST" action="/users">
+                        <div class="input-group">
+                            
+                            #// Creates an input text field
+                            <input type="text" name="username" class="form-control">
+                            
+                            #// Creates a button to submit the form
+                            <span class="input-group-btn">
+                                <input class="btn btn-success" type="submit" value="create" />
+                            </span>
+
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="col-xs-12 col-sm-3">
+                    <h2>Read</h2>
+                </div>
+                
+                <div class="col-xs-12 col-sm-3">
+                    <h2>Update</h2>
+                    #for(user in users) {
+                        <form method="POST" action="/users/#(user.id)/update">
+                            <div class="input-group form-group">
+                                <input type="text" name="username" class="form-control" value="#(user.username)">
+                                <span class="input-group-btn">
+                                    <input class="btn btn-primary" type="submit" value="update">
+                                </span>
+                            </div>
+                        </form>
+                    }
+                </div>
+                
+                <div class="col-xs-12 col-sm-3">
+                    <h2>Delete</h2>
+                </div>
+            
+            </div>
+            
+        </div>
+    </body>
+</html>

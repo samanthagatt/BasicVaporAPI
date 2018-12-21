@@ -17,7 +17,7 @@ final class UserController {
     func list(_ req: Request) throws -> Future<View> {
         return User.query(on: req).all().flatMap(){ users -> Future<View> in
             let data = ["users": users]
-            return try req.view().render("users", data)
+            return try req.view().render("crud", data)
         }
     }
     
@@ -28,12 +28,33 @@ final class UserController {
      */
     func create(_ req: Request) throws -> Future<Response> {
         // .decode() resolves to a Future<User> so you need to map/flatMap to "unwrap" to a plain User
-        return try req.content.decode(User.self).flatMap() { user -> Future<Response> in
+        return try req.content.decode(User.self).flatMap() { user in
             // Saves the user
             // map() and flatMap() themselves resolve to Futures and we use a map/flatmap below, so flatMap() was used above
-            return user.save(on: req).map() { _ -> Response in
+            return user.save(on: req).map() { _ in
                 // Final goal is to redirect to /users which resolves to a Response (NOT a Future<Response>) so .map() is used above
                 return req.redirect(to: "users")
+            }
+        }
+    }
+    
+    /**
+     Updates an existing User instance's username property
+     
+     Redirects back to /users
+     */
+    func update(_ req: Request) throws -> Future<Response> {
+        // Gets user id from first parameter in url
+        return try req.parameters.next(User.self).flatMap() { user in
+            // Decodes the new username from the url request's content
+            return try req.content.decode(UserForm.self).flatMap() { userForm in
+                // Sets the user's username
+                user.username = userForm.username
+                // Saves the user
+                return user.save(on: req).map() { _ in
+                    // Redirects to /users
+                    return req.redirect(to: "/users")
+                }
             }
         }
     }

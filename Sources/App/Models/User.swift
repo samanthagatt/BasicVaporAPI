@@ -8,7 +8,7 @@
 import Vapor
 import FluentPostgreSQL
 
-final class User: Content, PostgreSQLModel, Migration {
+final class User: Content, PostgreSQLModel, Parameter, Migration {
     
     init(id: Int? = nil, username: String) {
         self.id = id
@@ -16,5 +16,10 @@ final class User: Content, PostgreSQLModel, Migration {
     }
     
     var id: Int?
+    var username: String
+}
+
+/// Intermediate user used when updating the username of an existing User instance
+struct UserForm: Content {
     var username: String
 }
