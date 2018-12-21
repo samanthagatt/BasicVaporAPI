@@ -6,9 +6,9 @@
 //
 
 import Vapor
-import FluentSQLite
+import FluentPostgreSQL
 
-final class User: Content, SQLiteModel, Migration {
+final class User: Content, PostgreSQLModel, Migration {
     
     init(id: Int? = nil, username: String) {
         self.id = id
