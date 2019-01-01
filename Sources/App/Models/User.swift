@@ -8,7 +8,7 @@
 import Vapor
 import FluentSQLite
 
-final class User: Content, SQLiteModel, Migration {
+final class User: Content, SQLiteModel, Migration, Parameter {
     
     init(id: Int? = nil, username: String) {
         self.id = id
